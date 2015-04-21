@@ -14,6 +14,20 @@
 
 @implementation ViewController
 
+
+-(void)viewDidLoad{
+    
+    UISwipeGestureRecognizer* swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(dissmissView:)];
+    swipe.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.view addGestureRecognizer:swipe];
+    
+    
+}
+
+-(IBAction)dissmissView:(id)sender{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (IBAction)dismissButtonWasTouched:(UIButton *)sender{
     [self dismissViewControllerAnimated:YES completion:nil];
 }

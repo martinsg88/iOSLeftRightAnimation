@@ -12,6 +12,8 @@
 @interface LeftTORightAnimationController()
 
 @property(strong, nonatomic)SlideInteractor* interactor;
+@property(nonatomic)ViewController *modalController;
+
 @end
 
 
@@ -20,6 +22,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.interactor = [[SlideInteractor alloc] init];
+    UISwipeGestureRecognizer* swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hide:)];
+    _modalController = [self.storyboard instantiateViewControllerWithIdentifier:@"ModalViewController"];
+    _modalController.modalPresentationStyle = UIModalPresentationCustom;
+    _modalController.transitioningDelegate = self.interactor;
+
+    [self.view addGestureRecognizer:swipe];
+    
 }
 
 
@@ -28,16 +38,16 @@
     NSLog(@"view frame=%@ bounds=%@", NSStringFromCGRect(self.view.frame), NSStringFromCGRect(self.view.bounds));
 }
 
+-(IBAction)hide:(id)sender{
+    NSLog(@"swiped");
+    self.interactor.presenting = YES;
+    [self presentViewController:_modalController animated:YES completion:nil];
 
-- (IBAction)showModalButtonWasTouched:(id)sender
-{
-    self.interactor = [[SlideInteractor alloc] init];
+}
+
+- (IBAction)showModalButtonWasTouched:(id)sender{
     self.interactor.presenting = YES;
     
-    ViewController *modalController = [self.storyboard instantiateViewControllerWithIdentifier:@"ModalViewController"];
-    modalController.modalPresentationStyle = UIModalPresentationCustom;
-    modalController.transitioningDelegate = self.interactor;
-    [self presentViewController:modalController animated:YES completion:nil];
 }
 
 
